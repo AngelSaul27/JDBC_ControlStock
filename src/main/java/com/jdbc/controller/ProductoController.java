@@ -1,6 +1,8 @@
 package com.jdbc.controller;
 
+import com.jdbc.dao.CategoriaDAO;
 import com.jdbc.factory.ConnectionFactoy;
+import com.jdbc.modelo.Categoria;
 import com.jdbc.modelo.Producto;
 import com.jdbc.dao.ProductoDAO;
 
@@ -25,9 +27,12 @@ public class ProductoController {
 		return productoDAO.listar();
 	}
 
-    public void guardar(Producto producto){
-		productoDAO.guardar(producto);
+	public List<Producto> listar(Categoria categoria) {
+		return productoDAO.listar(categoria.getId());
 	}
 
-
+    public void guardar(Producto producto, Integer categoriaId){
+		producto.setCategoriaId(categoriaId);
+		productoDAO.guardar(producto);
+	}
 }

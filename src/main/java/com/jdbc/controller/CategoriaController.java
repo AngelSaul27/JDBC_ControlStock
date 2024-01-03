@@ -1,18 +1,27 @@
 package com.jdbc.controller;
 
+import com.jdbc.dao.CategoriaDAO;
+import com.jdbc.factory.ConnectionFactoy;
+import com.jdbc.modelo.Categoria;
+
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriaController {
 
-	public List<?> listar() {
-		// TODO
-		return new ArrayList<>();
+    private final CategoriaDAO categoriaDAO;
+
+    public CategoriaController(){
+        this.categoriaDAO = new CategoriaDAO(new ConnectionFactoy().recuperaConexion());
+    }
+
+	public List<Categoria> listar() {
+		return categoriaDAO.listado();
 	}
 
-    public List<?> cargaReporte() {
-        // TODO
-        return new ArrayList<>();
+    public List<Categoria> cargaReporte() {
+        return this.categoriaDAO.listarConProductos();
     }
 
 }

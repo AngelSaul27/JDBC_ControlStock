@@ -21,12 +21,42 @@ public class ProductoDAO {
         List<Producto> resultado = new ArrayList<>();
 
         try{
-            final PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM producto");
+            final PreparedStatement statement = con.prepareStatement("SELECT * FROM producto");
 
-            try(preparedStatement){
-                preparedStatement.execute();
+            try(statement){
+                statement.execute();
 
-                final ResultSet resultSet = preparedStatement.getResultSet();
+                final ResultSet resultSet = statement.getResultSet();
+
+                try(resultSet){
+                    while(resultSet.next()){
+                        Producto producto = new Producto(
+                                resultSet.getInt("ID"),
+                                resultSet.getString("NOMBRE"),
+                                resultSet.getString("DESCRIPCION"),
+                                resultSet.getInt("Cantidad")
+                        );
+                        resultado.add(producto);
+                    }
+                    return resultado;
+                }
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Producto> listar(Integer categoriaId) {
+        List<Producto> resultado = new ArrayList<>();
+
+        try{
+            final PreparedStatement statement = con.prepareStatement("SELECT * FROM producto WHERE categoria_id = ?");
+
+            try(statement){
+                statement.setInt(1, categoriaId);
+                statement.execute();
+
+                final ResultSet resultSet = statement.getResultSet();
 
                 try(resultSet){
                     while(resultSet.next()){
@@ -85,7 +115,7 @@ public class ProductoDAO {
             con.setAutoCommit(false);
 
             final PreparedStatement preparedStatement = con.prepareStatement(
-                    "INSERT INTO producto (NOMBRE, DESCRIPCION, CANTIDAD) VALUE (?,?,?)",
+                    "INSERT INTO producto (NOMBRE, DESCRIPCION, CANTIDAD, CATEGORIA_ID) VALUE (?,?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             try(preparedStatement){
@@ -102,6 +132,7 @@ public class ProductoDAO {
         preparedStatement.setString(1, producto.getNombre());
         preparedStatement.setString(2, producto.getDescripcion());
         preparedStatement.setInt(3, producto.getCantidad());
+        preparedStatement.setInt(4, producto.getCategoriaID());
         preparedStatement.execute();
 
         final ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -113,5 +144,4 @@ public class ProductoDAO {
             }
         }
     }
-
 }

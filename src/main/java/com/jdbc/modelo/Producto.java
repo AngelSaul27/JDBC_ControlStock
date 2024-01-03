@@ -6,6 +6,7 @@ public class Producto {
     private String nombre;
     private String descripcion;
     private Integer cantidad;
+    private Integer categoriaId;
 
     public Producto(String nombre, String descripcion, Integer cantidad) {
         this.nombre = nombre;
@@ -20,6 +21,12 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
+    public Producto(Integer id, String nombre, Integer cantidad){
+        this.id = id;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
+
     @Override
     public String toString() {
         return String.format("{id: %s, nombre: %s, descripcion: %s, cantidad: %s}", id, nombre, descripcion, cantidad);
@@ -29,24 +36,12 @@ public class Producto {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getDescripcion() {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public Integer getCantidad() {
         return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
     }
 
     public void setId(Integer id) {
@@ -55,5 +50,13 @@ public class Producto {
 
     public Integer getId(){
         return this.id;
+    }
+
+    public void setCategoriaId(Integer categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public Integer getCategoriaID() {
+        return this.categoriaId;
     }
 }
